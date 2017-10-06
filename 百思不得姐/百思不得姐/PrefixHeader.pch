@@ -1,0 +1,32 @@
+//
+//  PrefixHeader.pch
+//  百思不得姐
+//
+//  Created by Mr.Robot on 2017/8/13.
+//  Copyright © 2017年 Mr.Robot. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import "UIView+MRExtension.h"
+//每个文件就可以默认导入这个扩展类的头文件
+#import "UIBarButtonItem+MRExtension.h"
+#import "MRConst.h"
+#import "NSDate+MRExtension.h"
+
+#ifdef DEBUG
+#define MRLog(...) NSLog(__VA_ARGS__)
+#else
+#define MRLog(...)
+#endif
+
+#define MRLogFunc MRLog(@"%sAll is well!", __func__);
+
+#define MRRGBColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+#define MRGlobalBg MRRGBColor(223, 223, 223)
+
+// 获取屏幕宽高
+#define MRScreenW [UIScreen mainScreen].bounds.size.width
+#define MRScreenH [UIScreen mainScreen].bounds.size.height
+#endif /* PrefixHeader_pch */

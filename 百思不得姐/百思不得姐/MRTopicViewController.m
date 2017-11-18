@@ -8,11 +8,12 @@
 
 #import "MRTopicViewController.h"
 #import "MRTopic.h"
+#import "MRTopicCell.h"
+#import "MRCommentViewController.h"
 #import <MJExtension.h>
 #import <MJRefresh.h>
 #import <AFNetworking.h>
 #import <UIImageView+WebCache.h>
-#import "MRTopicCell.h"
 
 @interface MRTopicViewController ()
 /** 帖子数据 */
@@ -170,6 +171,12 @@ static NSString * const MRTopicCellId = @"topic";
     MRTopic *topic = self.topics[indexPath.row];
     
     return topic.cellHeight;
+}
+// 每个cell被选中之后自动调用此方法
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    MRCommentViewController *cmtController = [[MRCommentViewController alloc] init];
+    cmtController.topic = self.topics[indexPath.row];
+    [self.navigationController pushViewController:cmtController animated:YES];
 }
 
 @end

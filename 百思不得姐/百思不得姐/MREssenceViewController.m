@@ -39,15 +39,14 @@
  * 初始化子控制器
  */
 - (void)setupChildViewControllers{
-    MRTopicViewController *wordVC = [[MRTopicViewController alloc] init];
-    wordVC.title = @"段子";
-    wordVC.type = MRTopicTypeWord;
-    [self addChildViewController:wordVC];
-    
     MRTopicViewController *allVC = [[MRTopicViewController alloc] init];
     allVC.title = @"全部";
     allVC.type = MRTopicTypeAll;
     [self addChildViewController:allVC];
+    MRTopicViewController *wordVC = [[MRTopicViewController alloc] init];
+    wordVC.title = @"段子";
+    wordVC.type = MRTopicTypeWord;
+    [self addChildViewController:wordVC];
     MRTopicViewController *videoVC = [[MRTopicViewController alloc] init];
     videoVC.title = @"视频";
     videoVC.type = MRTopicTypeVideo;

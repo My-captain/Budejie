@@ -9,8 +9,11 @@
 #import "MRTopicCell.h"
 #import "MRTopic.h"
 #import "MRTopicPictureView.h"
+#import "MRTopicVideoView.h"
+#import "MRTopicVoiceView.h"
+#import "MRComment.h"
+#import "MRUser.h"
 #import <UIImageView+WebCache.h>
-
 @interface MRTopicCell()
 /** 头像 */
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
@@ -32,10 +35,18 @@
 @property (weak, nonatomic) IBOutlet UILabel *contentLabel;
 /* 图片帖子中间的内容 */
 @property (nonatomic, weak) MRTopicPictureView *pictureView;
+@property (nonatomic, weak) MRTopicVoiceView *voiceView;
+@property (nonatomic, weak) MRTopicVideoView *videoView;
+@property (weak, nonatomic) IBOutlet UILabel *topCmtContentLabel;
+@property (weak, nonatomic) IBOutlet UIView *topCmtView;
 
 @end
 
 @implementation MRTopicCell
+
++ (instancetype)cell{
+    return [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] firstObject];
+}
 
 - (MRTopicPictureView *)pictureView{
     if (!_pictureView) {
@@ -44,6 +55,24 @@
         _pictureView = pictureView;
     }
     return _pictureView;
+}
+
+- (MRTopicVoiceView *)voiceView{
+    if (!_voiceView) {
+        MRTopicVoiceView *voiceView = [MRTopicVoiceView voiceView];
+        [self.contentView addSubview:voiceView];
+        _voiceView = voiceView;
+    }
+    return _voiceView;
+}
+
+- (MRTopicVideoView *)videoView{
+    if (!_videoView) {
+        MRTopicVideoView *videoView = [MRTopicVideoView videoView];
+        [self.contentView addSubview:videoView];
+        _videoView = videoView;
+    }
+    return _videoView;
 }
 
 -(void)awakeFromNib{
@@ -80,8 +109,38 @@
     
     // 根据帖子类型添加对应的内容到cell中间
     if (topic.type == MRTopicTypePicture) {
+        self.pictureView.hidden = NO;
         self.pictureView.topic = topic;
         self.pictureView.frame = topic.pictureF;
+        
+        self.videoView.hidden = YES;
+        self.voiceView.hidden = YES;
+    } else if (topic.type == MRTopicTypeVoice) {
+        self.voiceView.hidden = NO;
+        self.voiceView.topic = topic;
+        self.voiceView.frame = topic.voiceF;
+        
+        self.videoView.hidden = YES;
+        self.pictureView.hidden = YES;
+    } else if (topic.type == MRTopicTypeVideo) {
+        self.videoView.hidden = NO;
+        self.videoView.topic = topic;
+        self.videoView.frame = topic.videoF;
+        
+        self.voiceView.hidden = YES;
+        self.pictureView.hidden = YES;
+    } else {
+        self.videoView.hidden = YES;
+        self.voiceView.hidden = YES;
+        self.pictureView.hidden = YES;
+    }
+    
+    // 处理最热评论
+    if (self.topic.top_cmt) {
+        self.topCmtView.hidden = NO;
+        self.topCmtContentLabel.text = [NSString stringWithFormat:@"%@:%@", self.topic.top_cmt.user.username, self.topic.top_cmt.content];
+    } else {
+        self.topCmtView.hidden = YES;
     }
 }
 
@@ -99,11 +158,24 @@
 - (void)setFrame:(CGRect)frame{
     frame.origin.x = MRTopicCellMargin;
     frame.size.width -= 2 * MRTopicCellMargin;
-    frame.size.height -= MRTopicCellMargin;
+    frame.size.height = self.topic.cellHeight - MRTopicCellMargin;
     frame.origin.y += MRTopicCellMargin;
     [super setFrame:frame];
 }
 
+- (IBAction)more:(id)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *enshrine = [UIAlertAction actionWithTitle:@"收藏" style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *report = [UIAlertAction actionWithTitle:@"举报" style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alert addAction:report];
+    [alert addAction:enshrine];
+    [alert addAction:cancel];
+    
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+}
 
 
 

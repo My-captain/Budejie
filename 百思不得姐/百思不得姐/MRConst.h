@@ -22,3 +22,17 @@ UIKIT_EXTERN CGFloat const MRTopicCellBottomBarH;
 UIKIT_EXTERN CGFloat const MRTopicCellPictureMaxH;
 /* 精华-cell-图片帖子超出最大高度后的强制size */
 UIKIT_EXTERN CGFloat const MRTopicCellPictureBreakH;
+
+/* MRUser模型-性别属性值 */
+UIKIT_EXTERN NSString * const MRUserSexMale;
+UIKIT_EXTERN NSString * const MRUserSexFemale;
+
+// 精华-cell-最热评论 四个字的高度
+UIKIT_EXTERN CGFloat const MRTopicCellTopCmtTitleH;
+
+
+
+
+
+
+

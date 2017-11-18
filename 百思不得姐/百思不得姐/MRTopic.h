@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+@class MRComment;
 
 @interface MRTopic : NSObject
+/* id */
+@property (nonatomic, copy) NSString *ID;
 /* 名称 */
 @property (nonatomic, copy) NSString *name;
 /* 头像 */
@@ -39,12 +42,23 @@
 @property (nonatomic, copy) NSString *middle_image;
 /* 帖子的类型 */
 @property (nonatomic, assign) MRTopicType type;
-
+/* 音频时长 */
+@property (nonatomic ,assign) NSInteger voicetime;
+/* 视频时长 */
+@property (nonatomic, assign) NSInteger videotime;
+/* 播放次数 */
+@property (nonatomic, assign) NSInteger playcount;
+// 存放MRComment模型
+@property (nonatomic, strong) MRComment *top_cmt;
 /******************** 额外的辅助属性 *********************/
 /* cell的高度 */
 @property (nonatomic, assign, readonly) CGFloat cellHeight;
 /* 图片控件的frame */
 @property (nonatomic, assign, readonly) CGRect pictureF;
+/* 声音控件的frame */
+@property (nonatomic, assign, readonly) CGRect voiceF;
+/* 视频控件的frame */
+@property (nonatomic, assign, readonly) CGRect videoF;
 /* 图片是否过大而被强制压缩至250 */
 @property (nonatomic, assign, getter=isBigPicture) BOOL bigPicture;
 

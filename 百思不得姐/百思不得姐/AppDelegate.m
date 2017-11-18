@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "MRTabBarController.h"
 #import "MRPushGuideView.h"
+#import "MRTopWindow.h"
 
 @interface AppDelegate ()
 
@@ -27,6 +28,8 @@
     [self.window makeKeyAndVisible];
     
     [MRPushGuideView show];
+    
+    
     
     return YES;
 }
@@ -48,7 +51,7 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    
+    [MRTopWindow show];
 }
 
 

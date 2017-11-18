@@ -14,3 +14,8 @@ CGFloat const MRTopicCellBottomBarH = 35;
 CGFloat const MRTopicCellPictureMaxH = 1000;
 /* 精华-cell-图片帖子超出最大高度后的强制size */
 CGFloat const MRTopicCellPictureBreakH = 250;
+
+/* MRUser模型-性别属性值 */
+NSString* const MRUserSexMale = @"m";
+NSString* const MRUserSexFemale = @"f";
+CGFloat const MRTopicCellTopCmtTitleH = 20;

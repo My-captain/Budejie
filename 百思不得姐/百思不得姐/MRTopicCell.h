@@ -10,4 +10,6 @@
 @class MRTopic;
 @interface MRTopicCell : UITableViewCell
 @property (nonatomic, strong) MRTopic *topic;
+
++ (instancetype)cell;
 @end

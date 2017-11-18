@@ -7,6 +7,8 @@
 //
 
 #import "MRTopic.h"
+#import "MRUser.h"
+#import "MRComment.h"
 
 @interface MRTopic()
 @end
@@ -15,14 +17,16 @@
 {
 @private
     CGFloat _cellHeight;
-    CGRect _pictureF;
 }
 
 + (NSDictionary *)replacedKeyFromPropertyName{
     return @{
              @"small_image" : @"image0",
              @"large_image" : @"image1",
-             @"middle_image" : @"image2"
+             @"middle_image" : @"image2",
+             @"ID" : @"id",
+             // 属性top_cmt 对应请求会的json中top_cmt数组的第一个数据
+             @"top_cmt" : @"top_cmt[0]"
              };
 }
 
@@ -79,7 +83,28 @@
             CGFloat pictureY = MRTopicCellTextY + textH + MRTopicCellMargin;
             _pictureF = CGRectMake(pictureX, pictureY, pictureW, pictureH);
             _cellHeight += pictureH + MRTopicCellMargin;
+        } else if (self.type == MRTopicTypeVoice) { // 声音帖子
+            CGFloat voiceX = MRTopicCellMargin;
+            CGFloat voiceY = MRTopicCellTextY + textH + MRTopicCellMargin;
+            CGFloat voiceW = maxSize.width;
+            CGFloat voiceH = voiceW * self.height / self.width;
+            _voiceF = CGRectMake(voiceX, voiceY, voiceW, voiceH);
+            _cellHeight += voiceH + MRTopicCellMargin;
+        } else if (self.type == MRTopicTypeVideo) { // 声音帖子
+            CGFloat videoX = MRTopicCellMargin;
+            CGFloat videoY = MRTopicCellTextY + textH + MRTopicCellMargin;
+            CGFloat videoW = maxSize.width;
+            CGFloat videoH = videoW * self.height / self.width;
+            _videoF = CGRectMake(videoX, videoY, videoW, videoH);
+            _cellHeight += videoH + MRTopicCellMargin;
         }
+        
+        if (self.top_cmt) {
+            NSString *content = [NSString stringWithFormat:@"%@:%@", self.top_cmt.user.username, self.top_cmt.content];
+            CGFloat contentH = [content boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13]} context:nil].size.height;
+            _cellHeight += MRTopicCellTopCmtTitleH + contentH + MRTopicCellMargin;
+        }
+        
         _cellHeight += MRTopicCellBottomBarH + MRTopicCellMargin;
     }
     return _cellHeight;
